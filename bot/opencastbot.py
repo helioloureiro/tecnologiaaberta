@@ -45,7 +45,7 @@ CONFIG = "%s/.%src" % (HOME, BOTNAME)
 PIDFILE = "%s/.%s.pid" % (HOME, BOTNAME)
 PAUTAS = "%s/tecnologiaaberta/pautas" % HOME
 SCRIPTHOME = "%s/tecnologiaaberta/bot" % HOME
-botadm, cfg, key, configuration = None, None, None, None
+botadms, cfg, key, configuration = None, None, None, None
 
 ### Refactoring
 # Applying the concepts from clean code (thanks uncle Bob)
@@ -183,10 +183,11 @@ def main():
 def get_global_keys():
     """Read globa settings like telegram key API"""
     debug("get_global_keys()")
-    global botadm, key, allowed_users
+    global botadms, key, allowed_users
     cfg = read_configuration(CONFIG)
     key = get_telegram_key(cfg, BOTNAME.upper())
     botadms = get_telegram_key(cfg, "%sADMS" % BOTNAME.upper())
+    allowed_users = botadms
 
 # avoiding nulls
 set_debug()
@@ -200,7 +201,7 @@ bot = telebot.TeleBot(key)
 def ToggleDebug(cmd):
     global DEBUG
     debug(cmd.text)
-    if not cmd.from_user.username == botadm:
+    if not cmd.from_user.username in botadms:
         bot.reply_to(cmd, "Só patrão pode isso.")
         return
     try:
