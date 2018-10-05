@@ -70,6 +70,7 @@ def error(message):
     debug(errormsg)
     syslog.openlog(BOTNAME)
     syslog.syslog(syslog.LOG_ERR, errormsg)
+    sys.stderr.write(errormsg)
 
 
 def log(message):
@@ -183,11 +184,9 @@ def get_global_keys():
     """Read globa settings like telegram key API"""
     debug("get_global_keys()")
     global botadm, key, allowed_users
-    configuration = "%s/%s" % (os.environ.get('HOME'), CONFIG)
-    cfg = read_configuration(configuration)
+    cfg = read_configuration(CONFIG)
     key = get_telegram_key(cfg, BOTNAME.upper())
-    botadm = get_telegram_key(cfg, "%sADM" % BOTNAME.upper())
-    allowed_users = get_telegram_key(cfg, "ALLOWEDUSERS")
+    botadms = get_telegram_key(cfg, "%sADMS" % BOTNAME.upper())
 
 # avoiding nulls
 set_debug()
@@ -269,7 +268,6 @@ def PautaHandler(cmd):
         else:
             last_pauta = filename
         msg = open("%s/%s" % (PAUTAS, last_pauta)).read()
-        #msg = "work in progress"
         return msg
 
     def sanitize(text):
