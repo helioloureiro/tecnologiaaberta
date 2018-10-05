@@ -231,21 +231,6 @@ def PautaHandler(cmd):
     debug("PautaHandler")
     msg = None
     curdir = os.curdir
-    def get_what_is():
-        url = "https://helioloureiro.github.io/tecnologiaaberta/"
-        www = requests.get(url)
-        msg = www.text
-        msg = msg.encode("utf-8")
-        debug(msg)
-        soup = bs4.BeautifulSoup(msg, "html")
-        msg = ""
-        for section in soup.findAll("section"):
-            buf = section.getText(separator='\n')
-            debug(buf)
-            msg += buf
-            msg += "\n"
-        return msg
-
 
     def git_init():
         os.chdir(HOME)
@@ -387,15 +372,16 @@ def PautaHandler(cmd):
             debug("Lendo pautas")
             msg = read_pauta()
 
-        elif re.search("^/add$|^/addnoticia$", cmd.text):
+        elif re.search("^/addsugestao", cmd.text):
+            msg = add_sugestao(cmd.text, cmd.from_user.username)
+
+        elif re.search("^/add", cmd.text):
             if is_allowed(cmd.from_user.username):
                 add_noticia(cmd.text)
                 msg = "Link adicionado com sucesso.  Use /pauta pra ler o conteúdo."
             else:
                 msg = "Sem permissão pra enviar novas entradas."
 
-        elif re.search("^/addsugestao", cmd.text):
-            msg = add_sugestao(cmd.text, cmd.from_user.username)
 
         elif re.search("^/novapauta", cmd.text):
             if is_allowed(cmd.from_user.username):
@@ -403,15 +389,12 @@ def PautaHandler(cmd):
                 msg = read_pauta()
             else:
                 msg = "Sem permissão pra enviar novas entradas."
-        elif re.search("^/testauser", cmd.text):
-            if is_allowed(cmd.from_user.username):
-                msg = "Usuário %s é autorizado." % cmd.from_user.username
-            else:
-                msg = "Usuário %s não tem autorização pra enviar posts." % cmd.from_user.username
+        else:
+            error("No commands found for: %s" msg)
 
     except Exception as e:
         try:
-            bot.reply_to(cmd, "Deu merda: %s" % e)
+            bot.reply_to(cmd, "Erro: %s" % e)
         except Exception as z:
             print(u"%s" % z)
 
