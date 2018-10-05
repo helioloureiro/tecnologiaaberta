@@ -400,16 +400,16 @@ def PautaHandler(cmd):
         debug(" * user: %s" % user)
         MAP = {
             "addsugestao" : [
-                "Sugestões\n---------\n",
+                "^Sugestões\n--",
                 "sugestão adicionada" ],
             "addnoticias" : [
-                "Notícias\n--------\n",
+                "^Notícias\n---",
                 "notícia adicionada" ],
             "addliberageral" : [
-                "Libera Geral (show me the code)\n-------------------------------\n",
+                "^Libera Geral (show me the code)\n--",
                 "adicionado ao libera geral" ],
             "addobituario" : [
-                "Obituário\n---------\n",
+                "^Obituário\n--",
                 "adicionado ao obituário. R.I.P." ]
                 }
         MAP["add"] = MAP["addnoticias"]
