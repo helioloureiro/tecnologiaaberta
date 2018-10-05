@@ -418,6 +418,9 @@ def PautaHandler(cmd):
             if re.search(MAP[section][0], content[i]):
                 position = i
                 break
+        if position is None:
+            return "erro ao adicionar %s" % msg
+
         content[position] += msg
         body = "\n\n".join(content)
 
@@ -428,19 +431,25 @@ def PautaHandler(cmd):
 
 
     try:
-        if re.search("^/pauta", cmd.text):
+        user = cmd.from_user.username
+        text = cmd.text
+
+        if re.search("^/pauta", text):
             debug("Lendo pautas")
             msg = read_pauta()
 
-        elif re.search("^/addsugestao", cmd.text):
-            msg = add_sugestao(cmd.text, cmd.from_user.username)
+        elif re.search("^/addsugestao", text):
+            section = "addsugestao"
+            text = re.sub(".*" + section + " ", "", text)
+            msg = add_news(section, text, user)
 
-        elif re.search("^/add", cmd.text):
-            if is_allowed(cmd.from_user.username):
-                add_noticia(cmd.text)
-                msg = "Link adicionado com sucesso.  Use /pauta pra ler o conteúdo."
-            else:
+        elif re.search("^/add", text):
+            if not is_allowed(cmd.from_user.username):
                 msg = "Sem permissão pra enviar novas entradas."
+            else:
+                section, url = text.split()
+                section = section[1:]
+                msg = add_news(section, url, user)
 
         elif re.search("^/novapauta", cmd.text):
             if is_allowed(cmd.from_user.username):
