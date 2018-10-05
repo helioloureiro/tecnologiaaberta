@@ -368,12 +368,17 @@ def PautaHandler(cmd):
         return "sugestão adicionada"
 
     def get_info_from_url(url):
+        debug("get_info_from_url()")
+        debug(" * url=%s" % url)
+
         if not re.search("^http", url):
+            debug(" * no http")
             return None
 
         req = requests.get(url)
         html = None
 
+        debug(" * status_code=%d" % req.status_code)
         if req.status_code == 200:
             html = req.text
         else:
@@ -389,6 +394,10 @@ def PautaHandler(cmd):
 
 
     def add_news(section, msg, user):
+        debug("add_news()")
+        debug(" * section: %s" % section)
+        debug(" * msg: %s" % msg)
+        debug(" * user: %s" % user)
         MAP = {
             "addsugestao" : [
                 "Sugestões\n---------\n",
