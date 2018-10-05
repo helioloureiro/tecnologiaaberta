@@ -458,7 +458,7 @@ def PautaHandler(cmd):
             else:
                 msg = "Sem permissão pra enviar novas entradas."
         else:
-            error("No commands found for: %s" msg)
+            error("No commands found for: %s" % msg)
 
     except Exception as e:
         try:
