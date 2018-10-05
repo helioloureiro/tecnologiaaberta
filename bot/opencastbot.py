@@ -473,7 +473,7 @@ def PautaHandler(cmd):
         else:
             error("No commands found for: %s" % msg)
 
-        bot.reply_to(msg)
+        bot.reply_to(cmd, msg)
     except Exception as e:
         try:
             bot.reply_to(cmd, "Erro: %s" % e)
