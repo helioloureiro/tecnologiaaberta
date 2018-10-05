@@ -434,7 +434,7 @@ def PautaHandler(cmd):
             debug(" * pattern=%s" % MAP[section][0])
             return "erro ao adicionar %s" % msg
 
-        content[position] += msg
+        content[position] += "\n" + msg
         body = "\n\n".join(content)
 
         with open(last_pauta, 'w') as fd:
