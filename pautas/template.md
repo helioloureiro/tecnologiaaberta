@@ -1,5 +1,5 @@
-Data: 
-Participantes: 
+Data:
+Participantes:
 Editor(es):
 Revisor(es):
 
@@ -12,4 +12,6 @@ Libera Geral (show me the code)
 Obituário
 ---------
 
+Sugestões
+---------
 
