@@ -366,6 +366,66 @@ def PautaHandler(cmd):
         pauta_commit_push(last_pauta)
         return "sugestão adicionada"
 
+    def get_info_from_url(url):
+        if not re.search("^http", url):
+            return None
+
+        req = requests.get(url)
+        html = None
+
+        if req.status_code == 200:
+            html = req.text
+        else:
+            return "Error lendo %s" % url
+
+        if html is not None:
+            soup = bs4.BeautifulSoup(html, "html")
+            title = sanitize(soup.title.text)
+            md_text = "* [%s](%s)" % (title, url)
+            return md_text
+        else:
+            return "Error lendo %s" % url
+
+
+    def add_news(section, msg, user):
+        MAP = {
+            "addsugestao" : [
+                "Sugestões\n---------\n",
+                "sugestão adicionada" ],
+            "addnoticias" : [
+                "Notícias\n--------\n",
+                "notícia adicionada" ],
+            "addliberageral" : [
+                "Libera Geral (show me the code)\n-------------------------------\n",
+                "adicionado ao libera geral" ],
+            "addobituario" : [
+                "Obituário\n---------\n",
+                "adicionado ao obituário. R.I.P." ]
+                }
+        MAP["add"] = MAP["addsugestao"]
+
+        last_pauta = get_last_pauta()
+        pauta_body = read_pauta(last_pauta)
+
+        content = pauta_body.split("\n\n")
+
+        if section == "addsugestao":
+            msg += " | author=%s" % user
+        else:
+            msg = get_info_from_url(msg)
+        position = None
+        for i in range(0, len(content)):
+            if re.search(MAP[section][0], content[i]):
+                position = i
+                break
+        content[position] += msg
+        body = "\n\n".join(content)
+
+        with open(last_pauta, 'w') as fd:
+            fd.write(body)
+        pauta_commit_push(last_pauta)
+        return MAP[section][1]
+
 
     try:
         if re.search("^/pauta", cmd.text):
@@ -381,7 +441,6 @@ def PautaHandler(cmd):
                 msg = "Link adicionado com sucesso.  Use /pauta pra ler o conteúdo."
             else:
                 msg = "Sem permissão pra enviar novas entradas."
-
 
         elif re.search("^/novapauta", cmd.text):
             if is_allowed(cmd.from_user.username):
