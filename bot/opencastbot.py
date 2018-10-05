@@ -425,6 +425,7 @@ def PautaHandler(cmd):
             msg = get_info_from_url(msg)
         position = None
         for i in range(0, len(content)):
+            debug("content[%d]: %s" % (i, content[i]))
             if re.search(MAP[section][0], content[i]):
                 position = i
                 break
