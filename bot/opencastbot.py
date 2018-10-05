@@ -412,7 +412,7 @@ def PautaHandler(cmd):
                 "Obituário\n---------\n",
                 "adicionado ao obituário. R.I.P." ]
                 }
-        MAP["add"] = MAP["addsugestao"]
+        MAP["add"] = MAP["addnoticias"]
 
         last_pauta = get_last_pauta()
         pauta_body = read_pauta(last_pauta)
