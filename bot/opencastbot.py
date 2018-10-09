@@ -403,7 +403,7 @@ def PautaHandler(cmd):
                 "^Sugest.es\n--",
                 "sugestão adicionada" ],
             "addnoticias" : [
-                "^Notícias\n---",
+                "^Not.cias\n---",
                 "notícia adicionada" ],
             "addliberageral" : [
                 "^Libera Geral (show me the code)\n--",
