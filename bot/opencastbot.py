@@ -36,6 +36,14 @@ using "/setcommands"
 
 == OpenCast bot ==
 
+pauta - mostra conteúdo da pauta
+novapauta - cria uma pauta nova a partir do template
+addsugestao - adiciona um link na seção de sugestão
+addnoticias - adiciona um link na seção de notícias
+addliberageral - adiciona um link na seção do libera geral
+addobituario - adiciona um link póstumo na seção de obituário
+add - adiciona link na sugestão geral da pauta
+
 """
 
 DEBUG = False
