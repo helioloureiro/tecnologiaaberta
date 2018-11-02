@@ -257,10 +257,12 @@ def PautaHandler(cmd):
         return last_pauta
 
     def read_pauta(filename=None):
+        debug("read_pauta()")
         if filename is None:
             last_pauta = get_last_pauta()
         else:
             last_pauta = filename
+        debug(" * last_pauta=%s" % last_pauta)
         msg = open("%s/%s" % (PAUTAS, last_pauta)).read()
         return msg
 
@@ -480,8 +482,6 @@ def PautaHandler(cmd):
                 msg = "Sem permissão pra enviar novas entradas."
         else:
             error("No commands found for: %s" % msg)
-
-        bot.reply_to(cmd, msg)
     except Exception as e:
         try:
             bot.reply_to(cmd, "Erro: %s" % e)
@@ -514,7 +514,7 @@ def PautaHandler(cmd):
         try:
             bot.send_message(cmd.chat.id, msg)
         except Exception as e:
-            bot.reply_to(cmd, "Deu merda: %s" % e)
+            bot.reply_to(cmd, "ERROR: %s" % e)
 
 
 if __name__ == '__main__':
